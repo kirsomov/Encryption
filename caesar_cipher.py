@@ -3,6 +3,9 @@ import string
 
 
 alphabet = string.ascii_letters
+alphabet += string.whitespace
+alphabet += string.punctuation
+alphabet += "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
 
 def ShiftSymbol(symbol, shift):

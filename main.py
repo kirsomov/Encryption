@@ -3,6 +3,7 @@ import argparse
 
 import counting_frequency
 import caesar_cipher
+import vigenere_cipher
 
 
 def CreateParser():
@@ -14,6 +15,7 @@ def CreateParser():
     parser.add_argument('--key')
     parser.add_argument('--symbols_frequency')
     return parser
+
 
 if __name__ == "__main__":
     assert(len(sys.argv) > 1)
@@ -34,3 +36,12 @@ if __name__ == "__main__":
                 caesar_cipher.Hack(namespace.input_file, namespace.symbols_frequency, namespace.output_file)
             else:
                 assert(False)
+        elif namespace.cipher == 'vigenere':
+            if namespace.mode == 'code':
+                vigenere_cipher.Code(namespace.input_file, namespace.output_file, namespace.key)
+            elif namespace.mode == 'encode':
+                vigenere_cipher.Encode(namespace.input_file, namespace.output_file, namespace.key)
+            else:
+                assert(False)
+        else:
+            assert(False)
