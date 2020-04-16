@@ -3,7 +3,7 @@ import pickle
 
 
 alphabet = string.ascii_letters
-alphabet += string.whitespace
+alphabet += ' '
 alphabet += string.punctuation
 alphabet += "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
@@ -52,14 +52,14 @@ def GetDecryptedString(string, key):
     return decrypted_string
 
 
-def Code(input_file, output_file, key):
+def Encode(input_file, output_file, key):
     with open(input_file) as input_f:
         text = input_f.read()
     with open(output_file, 'w') as output_f:
         output_f.write(GetEncryptedString(text, key))
 
 
-def Encode(input_file, output_file, key):
+def Decode(input_file, output_file, key):
     with open(input_file) as input_f:
         text = input_f.read()
     with open(output_file, 'w') as output_f:

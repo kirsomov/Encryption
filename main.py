@@ -28,19 +28,19 @@ if __name__ == "__main__":
         assert(len(sys.argv) == 10)
         namespace = parser.parse_args(sys.argv[1:])
         if namespace.cipher == 'caesar':
-            if namespace.mode == 'code':
-                caesar_cipher.Code(namespace.input_file, namespace.output_file, int(namespace.key))
-            elif namespace.mode == 'encode':
+            if namespace.mode == 'encode':
                 caesar_cipher.Encode(namespace.input_file, namespace.output_file, int(namespace.key))
+            elif namespace.mode == 'decode':
+                caesar_cipher.Decode(namespace.input_file, namespace.output_file, int(namespace.key))
             elif namespace.mode == 'hack':
                 caesar_cipher.Hack(namespace.input_file, namespace.symbols_frequency, namespace.output_file)
             else:
                 assert(False)
         elif namespace.cipher == 'vigenere':
-            if namespace.mode == 'code':
-                vigenere_cipher.Code(namespace.input_file, namespace.output_file, namespace.key)
-            elif namespace.mode == 'encode':
+            if namespace.mode == 'encode':
                 vigenere_cipher.Encode(namespace.input_file, namespace.output_file, namespace.key)
+            elif namespace.mode == 'decode':
+                vigenere_cipher.Decode(namespace.input_file, namespace.output_file, namespace.key)
             else:
                 assert(False)
         else:

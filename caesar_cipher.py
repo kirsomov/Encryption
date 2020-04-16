@@ -3,7 +3,7 @@ import string
 
 
 alphabet = string.ascii_letters
-alphabet += string.whitespace
+alphabet += ' '
 alphabet += string.punctuation
 alphabet += "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 
@@ -31,11 +31,11 @@ def ShiftText(input_file, output_file, shift):
         output_f.write(ShiftString(text, shift))
 
 
-def Code(input_file, output_file, key):
+def Encode(input_file, output_file, key):
     ShiftText(input_file, output_file, key)
 
 
-def Encode(input_file, output_file, key):
+def Decode(input_file, output_file, key):
     ShiftText(input_file, output_file, len(alphabet) - key)
 
 
@@ -51,6 +51,8 @@ def Hack(input_file, symbols_frequency, output_file):
         shifted_text = ShiftString(text, shift)
         current_frequency_dict = dict()
         for symbol in alphabet:
+            if not (symbol in frequency_dict.keys()):
+                frequency_dict[symbol] = 0
             current_frequency_dict[symbol] = 0
         for symbol in shifted_text:
             if symbol in current_frequency_dict:
