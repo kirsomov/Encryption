@@ -2,67 +2,58 @@ import pickle
 import string
 
 
-alphabet = string.ascii_letters
-alphabet += ' '
-alphabet += string.punctuation
-alphabet += "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+ALPHABET += ALPHABET.upper()
+ALPHABET += string.ascii_letters
+ALPHABET += ' '
+ALPHABET += string.punctuation
 
 
-def ShiftSymbol(symbol, shift):
-    pos = alphabet.find(symbol)
-    pos = (pos + shift) % len(alphabet)
-    return alphabet[pos]
+DICT_OF_SYMBOLS_WITH_POSITIONS = {ALPHABET[i]: i for i in range(len(ALPHABET))}
 
 
-def ShiftString(string, shift):
-    shifted_string = ""
-    for symbol in string:
-        if symbol in alphabet:
-            shifted_string += ShiftSymbol(symbol, shift)
-        else:
-            shifted_string += symbol
-    return shifted_string
+def shift_symbol(symbol, shift):
+    if not symbol in DICT_OF_SYMBOLS_WITH_POSITIONS:
+        return symbol
+    pos = DICT_OF_SYMBOLS_WITH_POSITIONS[symbol]
+    pos = (pos + shift) % len(ALPHABET)
+    return ALPHABET[pos]
 
 
-def ShiftText(input_file, output_file, shift):
-    with open(input_file) as input_f:
-        text = input_f.read()
-    with open(output_file, 'w') as output_f:
-        output_f.write(ShiftString(text, shift))
+def shift_text(text, shift):
+    return "".join(shift_symbol(symbol, shift) for symbol in text)
 
 
-def Encode(input_file, output_file, key):
-    ShiftText(input_file, output_file, key)
+def encode(input_text, key):
+    return shift_text(input_text, key)
 
 
-def Decode(input_file, output_file, key):
-    ShiftText(input_file, output_file, len(alphabet) - key)
+def decode(input_text, key):
+    return shift_text(input_text, -key)
 
 
-def Hack(input_file, symbols_frequency, output_file):
-    with open(input_file) as input_f:
-        text = input_f.read()
+def hack(input_text, symbols_frequency):
     with open(symbols_frequency, 'rb') as symbols_frequency_f:
         frequency_dict = pickle.load(symbols_frequency_f)
     best_shift = 0
-    best_dist = len(alphabet) * len(text)
+    best_dist = len(ALPHABET) * len(input_text)
 
-    for shift in range(len(alphabet)):
-        shifted_text = ShiftString(text, shift)
+    for shift in range(len(ALPHABET)):
+        shifted_text = shift_text (input_text, shift)
         current_frequency_dict = dict()
-        for symbol in alphabet:
+        for symbol in ALPHABET:
             if not (symbol in frequency_dict.keys()):
                 frequency_dict[symbol] = 0
             current_frequency_dict[symbol] = 0
         for symbol in shifted_text:
             if symbol in current_frequency_dict:
-                current_frequency_dict[symbol] += 1 / len(text)
+                current_frequency_dict[symbol] += 1 / len(input_text)
         current_dist = 0.0
-        for symbol in alphabet:
+        for symbol in ALPHABET:
             diff = current_frequency_dict[symbol] - frequency_dict[symbol]
             current_dist += diff * diff
         if current_dist < best_dist:
             best_dist = current_dist
             best_shift = shift
 
-    ShiftText(input_file, output_file, best_shift)
+    return shift_text(input_text, best_shift)

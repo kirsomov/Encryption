@@ -2,65 +2,45 @@ import string
 import pickle
 
 
-alphabet = string.ascii_letters
-alphabet += ' '
-alphabet += string.punctuation
-alphabet += "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+ALPHABET += ALPHABET.upper()
+ALPHABET += string.ascii_letters
+ALPHABET += ' '
+ALPHABET += string.punctuation
 
 
-def GetVigenereSquare():
+DICT_OF_SYMBOLS_WITH_POSITIONS = {ALPHABET[i]: i for i in range(len(ALPHABET))}
+
+
+def get_vigenere_square():
     square = list()
-    for i in range(len(alphabet)):
-        square.append(alphabet[i:]+alphabet[:i])
+    for i in range(len(ALPHABET)):
+        square.append(ALPHABET[i:]+ALPHABET[:i])
     return square
 
 
-square = GetVigenereSquare()
+SQUARE = get_vigenere_square()
 
 
-def GetEncryptedSymbol(symbol, key_symbol):
-    symbol_pos = alphabet.find(symbol)
-    key_symbol_pos = alphabet.find(key_symbol)
-    return square[symbol_pos][key_symbol_pos]
+def get_encrypted_symbol(symbol, key_symbol):
+    if not symbol in DICT_OF_SYMBOLS_WITH_POSITIONS:
+        return symbol
+    symbol_pos = ALPHABET.find(symbol)
+    key_symbol_pos = ALPHABET.find(key_symbol)
+    return SQUARE[symbol_pos][key_symbol_pos]
 
 
-def GetDecryptedSymbol(symbol, key_symbol):
-    key_symbol_pos = alphabet.find(key_symbol)
-    column = square[key_symbol_pos].find(symbol)
-    return square[0][column]
+def get_decrypted_symbol(symbol, key_symbol):
+    if not symbol in DICT_OF_SYMBOLS_WITH_POSITIONS:
+        return symbol
+    key_symbol_pos = ALPHABET.find(key_symbol)
+    column = SQUARE[key_symbol_pos].find(symbol)
+    return ALPHABET[column]
 
 
-def GetEncryptedString(string, key):
-    encrypted_string = ""
-    key = key*(len(string) // len(key) + 1)
-    for symbol, key_symbol in zip(string, key):
-        if symbol in alphabet:
-            encrypted_string += GetEncryptedSymbol(symbol, key_symbol)
-        else:
-            encrypted_string += symbol
-    return encrypted_string
+def encode(text, key):
+    return "".join(get_encrypted_symbol(symbol, key) for symbol in text)
 
 
-def GetDecryptedString(string, key):
-    decrypted_string = ""
-    key = key*(len(string) // len(key) + 1)
-    for symbol, key_symbol in zip(string, key):
-        if symbol in alphabet:
-            decrypted_string += GetDecryptedSymbol(symbol, key_symbol)
-        else:
-            decrypted_string += symbol
-    return decrypted_string
-
-
-def Encode(input_file, output_file, key):
-    with open(input_file) as input_f:
-        text = input_f.read()
-    with open(output_file, 'w') as output_f:
-        output_f.write(GetEncryptedString(text, key))
-
-
-def Decode(input_file, output_file, key):
-    with open(input_file) as input_f:
-        text = input_f.read()
-    with open(output_file, 'w') as output_f:
-        output_f.write(GetDecryptedString(text, key))
+def decode(text, key):
+    return "".join(get_decrypted_symbol(symbol, key) for symbol in text)
