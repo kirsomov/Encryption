@@ -23,7 +23,7 @@ SQUARE = get_vigenere_square()
 
 
 def get_encrypted_symbol(symbol, key_symbol):
-    if not symbol in DICT_OF_SYMBOLS_WITH_POSITIONS:
+    if symbol not in DICT_OF_SYMBOLS_WITH_POSITIONS:
         return symbol
     symbol_pos = ALPHABET.find(symbol)
     key_symbol_pos = ALPHABET.find(key_symbol)
@@ -31,7 +31,7 @@ def get_encrypted_symbol(symbol, key_symbol):
 
 
 def get_decrypted_symbol(symbol, key_symbol):
-    if not symbol in DICT_OF_SYMBOLS_WITH_POSITIONS:
+    if symbol not in DICT_OF_SYMBOLS_WITH_POSITIONS:
         return symbol
     key_symbol_pos = ALPHABET.find(key_symbol)
     column = SQUARE[key_symbol_pos].find(symbol)

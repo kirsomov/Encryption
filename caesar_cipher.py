@@ -13,7 +13,7 @@ DICT_OF_SYMBOLS_WITH_POSITIONS = {ALPHABET[i]: i for i in range(len(ALPHABET))}
 
 
 def shift_symbol(symbol, shift):
-    if not symbol in DICT_OF_SYMBOLS_WITH_POSITIONS:
+    if symbol not in DICT_OF_SYMBOLS_WITH_POSITIONS:
         return symbol
     pos = DICT_OF_SYMBOLS_WITH_POSITIONS[symbol]
     pos = (pos + shift) % len(ALPHABET)
@@ -39,7 +39,7 @@ def hack(input_text, symbols_frequency):
     best_dist = len(ALPHABET) * len(input_text)
 
     for shift in range(len(ALPHABET)):
-        shifted_text = shift_text (input_text, shift)
+        shifted_text = shift_text(input_text, shift)
         current_frequency_dict = dict()
         for symbol in ALPHABET:
             if not (symbol in frequency_dict.keys()):

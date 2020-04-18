@@ -9,7 +9,6 @@ import vigenere_cipher
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('mode')
-    parser.add_argument('input_string', nargs='?')
     parser.add_argument('--input_file')
     parser.add_argument('--output_file')
     parser.add_argument('--cipher')
@@ -19,14 +18,13 @@ def create_parser():
 
 
 if __name__ == "__main__":
-    assert(len(sys.argv) > 1)
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     if namespace.input_file:
         with open(namespace.input_file) as input_f:
             input_text = input_f.read()
     else:
-        input_text = namespace.input_string
+        input_text = "".join(line for line in sys.stdin)
     if namespace.mode == "counting_frequency":
         if namespace.output_file:
             counting_frequency.get_frequency_as_pickle(input_text, namespace.output_file)
@@ -39,7 +37,7 @@ if __name__ == "__main__":
             elif namespace.mode == 'decode':
                 output_text = caesar_cipher.decode(input_text, int(namespace.key))
             elif namespace.mode == 'hack':
-               output_text = caesar_cipher.hack(input_text, namespace.symbols_frequency)
+                output_text = caesar_cipher.hack(input_text, namespace.symbols_frequency)
             else:
                 assert(False)
         elif namespace.cipher == 'vigenere':
