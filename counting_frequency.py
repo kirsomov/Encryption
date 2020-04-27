@@ -1,20 +1,19 @@
 import pickle
+from collections import defaultdict
 
 
 def get_frequency_dict(input_string):
-    frequency_dict = dict()
+    frequency_dict = defaultdict(float)
     for symbol in input_string:
-        if symbol in frequency_dict:
-            frequency_dict[symbol] += 1 / len(input_string)
-        else:
-            frequency_dict[symbol] = 1 / len(input_string)
+        frequency_dict[symbol] += 1 / len(input_string)
     return frequency_dict
 
 
-def get_frequency_as_pickle(input_string, output_file):
+def dump_frequency(input_string, output_file):
     with open(output_file, 'wb') as output_f:
         pickle.dump(get_frequency_dict(input_string), output_f)
 
 
-def print_frequency(input_string):
-    print(get_frequency_dict(input_string))
+def load_frequency(symbols_frequency):
+    with open(symbols_frequency, 'rb') as symbols_frequency_f:
+        return pickle.load(symbols_frequency_f)
