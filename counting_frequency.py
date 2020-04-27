@@ -9,9 +9,13 @@ def get_frequency_dict(input_string):
     return frequency_dict
 
 
-def dump_frequency(input_string, output_file):
+def dump_dict(dictionary, output_file):
     with open(output_file, 'wb') as output_f:
-        pickle.dump(get_frequency_dict(input_string), output_f)
+        pickle.dump(dictionary, output_f)
+
+
+def dump_frequency(input_string, output_file):
+    dump_dict(get_frequency_dict, output_file)
 
 
 def load_frequency(symbols_frequency):
