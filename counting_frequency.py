@@ -15,7 +15,7 @@ def dump_dict(dictionary, output_file):
 
 
 def dump_frequency(input_string, output_file):
-    dump_dict(get_frequency_dict, output_file)
+    dump_dict(get_frequency_dict(input_string), output_file)
 
 
 def load_frequency(symbols_frequency):

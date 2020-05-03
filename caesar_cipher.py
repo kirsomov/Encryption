@@ -48,6 +48,3 @@ def hack(input_text, symbols_frequency):
             best_shift = shift
 
     return shift_text(input_text, best_shift)
-
-
-print(hack(";asldkfj", 'frequency.pickle'))

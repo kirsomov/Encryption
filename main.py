@@ -45,6 +45,7 @@ if __name__ == "__main__":
             input_text = input_f.read()
     else:
         input_text = sys.stdin.read()
+    input_text = input_text.strip('\n')
     if mode == "counting_frequency":
         counting_frequency.dump_frequency(input_text, args.output_file)
     else:
