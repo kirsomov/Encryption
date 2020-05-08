@@ -1,34 +1,49 @@
 import string
 import pickle
-import alphabet
+from alphabet import ALPHABET
+from alphabet import SYMBOLS_TO_POSITIONS
 
 
-def get_symbol_pos(symbol):
-    return alphabet.DICT_OF_SYMBOLS_WITH_POSITIONS[symbol]
+def get_encrypted_symbol_pos(symbol_pos, key_symbol_pos):
+    return (symbol_pos + key_symbol_pos) % len(ALPHABET)
+
+
+def get_decrypted_symbol_pos(symbol_pos, key_symbol_pos):
+    alphabet_length = len(ALPHABET)
+    return (symbol_pos - key_symbol_pos + alphabet_length) % alphabet_length
+
+
+# в зависимости от переданной функции возвращает зашифрованный или дешифрованный символ
+# передаваемая функция должна принимать два аргумента symbol и key_symbol
+# в данной программе используется (и должно использоваться только)
+# только функции get_decrypted_symbol_pos and get_encrypted_symbol_pos
+def get_symbol_by_function(symbol, key_symbol, func):
+    assert func == get_encrypted_symbol_pos or func == get_decrypted_symbol_pos, "incorrect index retrieval function"
+    if symbol not in SYMBOLS_TO_POSITIONS:
+        return symbol
+    symbol_pos = SYMBOLS_TO_POSITIONS[symbol]
+    key_symbol_pos = SYMBOLS_TO_POSITIONS[key_symbol]
+    return ALPHABET[func(symbol_pos, key_symbol_pos)]
 
 
 def get_encrypted_symbol(symbol, key_symbol):
-    if symbol not in alphabet.DICT_OF_SYMBOLS_WITH_POSITIONS:
-        return symbol
-    symbol_pos = get_symbol_pos(symbol)
-    key_symbol_pos = get_symbol_pos(key_symbol)
-    encrypted_symbol_pos = (symbol_pos + key_symbol_pos) % len(alphabet.ALPHABET)
-    return alphabet.ALPHABET[encrypted_symbol_pos]
+    return get_symbol_by_function(symbol, key_symbol, get_encrypted_symbol_pos)
 
 
 def get_decrypted_symbol(symbol, key_symbol):
-    if symbol not in alphabet.DICT_OF_SYMBOLS_WITH_POSITIONS:
-        return symbol
-    symbol_pos = get_symbol_pos(symbol)
-    key_symbol_pos = get_symbol_pos(key_symbol)
-    alphabet_length = len(alphabet.ALPHABET)
-    decrypted_symbol_pos = (symbol_pos - key_symbol_pos + alphabet_length) % alphabet_length
-    return alphabet.ALPHABET[decrypted_symbol_pos]
+    return get_symbol_by_function(symbol, key_symbol, get_decrypted_symbol_pos)
+
+
+# аналогично get_symbol_by_function
+# используется для get_encrypted_symbol, get_decrypted_symbol
+def code(text, key, func):
+    assert func == get_encrypted_symbol or func == get_decrypted_symbol, "incorrect index retrieval function"
+    return "".join(func(text[i], key[i % len(key)]) for i in range(len(text)))
 
 
 def encode(text, key):
-    return "".join(get_encrypted_symbol(text[i], key[i % len(key)]) for i in range(len(text)))
+    return code(text, key, get_encrypted_symbol)
 
 
 def decode(text, key):
-    return "".join(get_decrypted_symbol(text[i], key[i % len(key)]) for i in range(len(text)))
+    return code(text, key, get_decrypted_symbol)

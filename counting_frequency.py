@@ -1,11 +1,11 @@
 import pickle
-from collections import defaultdict
+from collections import Counter
 
 
 def get_frequency_dict(input_string):
-    frequency_dict = defaultdict(float)
-    for symbol in input_string:
-        frequency_dict[symbol] += 1 / len(input_string)
+    frequency_dict = dict(Counter(input_string).most_common())
+    for key in frequency_dict.keys():
+        frequency_dict[key] /= len(input_string)
     return frequency_dict
 
 

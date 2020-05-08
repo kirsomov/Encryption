@@ -13,4 +13,4 @@ RUSSIAN_ALPHABET += RUSSIAN_ALPHABET.upper()
 ALPHABET += RUSSIAN_ALPHABET
 
 
-DICT_OF_SYMBOLS_WITH_POSITIONS = {symbol: i for i, symbol in enumerate(ALPHABET)}
+SYMBOLS_TO_POSITIONS = {symbol: i for i, symbol in enumerate(ALPHABET)}
