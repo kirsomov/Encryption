@@ -7,43 +7,50 @@ import caesar_cipher
 import vigenere_cipher
 
 
-# у парсера есть разделеня на сабпарсеры: hack, counting_frequency, encode, decode;
-# которые выбираются в зависимости от режима
-#
-# у всех сабпарсеров есть аргументы --input_file, --output_file,
-# являющиеся необязательными для всех режимов, кроме counting_frequency, в котором --output_file обязателен
-# при отсутствии этих параметров ввод и ввывод осуществляются через консоль
-#
-# в режимах code, encode параметры --key --cipher также является обязательным
-# в шифре Цезаря ключ должен быть числомб в шифре Виженера - строкой
-#
-# в режиме hack также указываются такие обязательные параметры, как
-# шифр (в данной реализации только caesar) и файл с частотами символов
+# tool for encoding, decoding, conting frequency and hacking
 def create_parser():
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(dest='mode')
+    subparsers = parser.add_subparsers(dest='mode', help=" \
+            the parser has subparsers: hack, counting_frequency, encode, decode; \
+            which are selected depending on the mode \
+            all subparsers have arguments --input_file, --output_file, \
+            which are optional for all modes except counting_frequency, in which --output_file is required \
+            in the absence of these parameters, input and output are carried out through the console ")
 
     parser_hack = subparsers.add_parser('hack')
-    parser_hack.add_argument('--cipher', required=True)
-    parser_hack.add_argument('--symbols_frequency', required=True)
-    parser_hack.add_argument('--input_file')
-    parser_hack.add_argument('--output_file')
+    parser_hack.add_argument('--cipher', required=True,
+                             help="required argument, caesar or cipher")
+    parser_hack.add_argument('--symbols_frequency', required=True,
+                             help="required argument")
+    parser_hack.add_argument('--input_file',
+                             help="if the argument is passed input from a file, else through the console")
+    parser_hack.add_argument('--output_file',
+                             help="if the argument is passed output from a file, else through the console")
 
     parser_counting_frequency = subparsers.add_parser('counting_frequency')
-    parser_counting_frequency.add_argument('--input_file')
-    parser_counting_frequency.add_argument('--output_file', required=True)
+    parser_counting_frequency.add_argument('--input_file',
+                                           help="if the argument is passed input from a file, else through the console")
+    parser_counting_frequency.add_argument('--output_file', required=True,
+                                           help="required argument, output through the console")
 
     parser_encode = subparsers.add_parser('encode')
-    parser_encode.add_argument('--key', required=True, help="int in caesar cipher or string in vigenere cipher")
-    parser_encode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'])
-    parser_encode.add_argument('--input_file')
-    parser_encode.add_argument('--output_file')
+    parser_encode.add_argument('--key', required=True,
+                               help="int in caesar cipher or string in vigenere cipher, required argument")
+    parser_encode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'],
+                               help="required argument, caesar or cipher")
+    parser_encode.add_argument('--input_file',
+                               help="if the argument is passed input from a file, else through the console")
+    parser_encode.add_argument('--output_file',
+                               help="if the argument is passed output from a file, else through the console")
 
     parser_decode = subparsers.add_parser('decode')
     parser_decode.add_argument('--key', required=True, help="int in caesar cipher or string in vigenere cipher")
-    parser_decode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'])
-    parser_decode.add_argument('--input_file')
-    parser_decode.add_argument('--output_file')
+    parser_decode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'],
+                               help="required argument, caesar or cipher")
+    parser_decode.add_argument('--input_file',
+                               help="if the argument is passed input from a file, else through the console")
+    parser_decode.add_argument('--output_file',
+                               help="if the argument is passed output from a file, else through the console")
 
     return parser
 
