@@ -4,11 +4,12 @@ from alphabet import ALPHABET
 from alphabet import SYMBOLS_TO_POSITIONS
 
 
-# coefficient - параметр, говорящий какая функция вызывается:
-# 1 для зашифровки, -1 для расшифровки
-# encrypted_symbol_pos = (symbol_pos + key_symbol_pos) % len(ALPHABET)
-# decrypted_symbol_pos = (symbol_pos - key_cymbol_pos) % len(ALPHABET)
-def get_symbol_by_coefficient(symbol, key_symbol, coefficient):
+def encode_symbol(symbol, key_symbol, coefficient):
+    """coefficient - параметр, говорящий какая функция вызывается:
+    1 для зашифровки, -1 для расшифровки
+    encrypted_symbol_pos = (symbol_pos + key_symbol_pos) % len(ALPHABET)
+    decrypted_symbol_pos = (symbol_pos - key_cymbol_pos) % len(ALPHABET)
+    """
     assert coefficient in [-1, 1], "incorrect coefficient"
     if symbol not in SYMBOLS_TO_POSITIONS:
         return symbol
@@ -17,11 +18,12 @@ def get_symbol_by_coefficient(symbol, key_symbol, coefficient):
     return ALPHABET[(symbol_pos + coefficient * key_symbol_pos) % len(ALPHABET)]
 
 
-# coefficient - параметр, говорящий какая функция вызывается:
-# 1 для зашифровки, -1 для расшифровки
 def code(text, key, coefficient):
+    """coefficient - параметр, говорящий какая функция вызывается:
+    1 для зашифровки, -1 для расшифровки
+    """
     assert coefficient in [-1, 1], "incorrect coefficient"
-    return "".join(get_symbol_by_function(symbol, key[i % len(key)], coefficient) for i, symbol in enumerate(text))
+    return "".join(encode_symbol(symbol, key[i % len(key)], coefficient) for i, symbol in enumerate(text))
 
 
 def encode(text, key):

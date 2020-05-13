@@ -7,9 +7,8 @@ import caesar_cipher
 import vigenere_cipher
 
 
-# tool for encoding, decoding, conting frequency and hacking
 def create_parser():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='tool for encoding, decoding, conting frequency and hacking')
     subparsers = parser.add_subparsers(dest='mode', help=" \
             the parser has subparsers: hack, counting_frequency, encode, decode; \
             which are selected depending on the mode \
