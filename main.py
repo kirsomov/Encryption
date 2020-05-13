@@ -17,10 +17,8 @@ def create_parser():
             in the absence of these parameters, input and output are carried out through the console ")
 
     parser_hack = subparsers.add_parser('hack')
-    parser_hack.add_argument('--cipher', required=True,
-                             help="required argument, caesar or cipher")
-    parser_hack.add_argument('--symbols_frequency', required=True,
-                             help="required argument")
+    parser_hack.add_argument('--cipher', required=True, choices=['caesar'])
+    parser_hack.add_argument('--symbols_frequency', required=True)
     parser_hack.add_argument('--input_file',
                              help="if the argument is passed input from a file, else through the console")
     parser_hack.add_argument('--output_file',
@@ -34,9 +32,8 @@ def create_parser():
 
     parser_encode = subparsers.add_parser('encode')
     parser_encode.add_argument('--key', required=True,
-                               help="int in caesar cipher or string in vigenere cipher, required argument")
-    parser_encode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'],
-                               help="required argument, caesar or cipher")
+                               help="int in caesar cipher or string in vigenere cipher")
+    parser_encode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'])
     parser_encode.add_argument('--input_file',
                                help="if the argument is passed input from a file, else through the console")
     parser_encode.add_argument('--output_file',
@@ -44,8 +41,7 @@ def create_parser():
 
     parser_decode = subparsers.add_parser('decode')
     parser_decode.add_argument('--key', required=True, help="int in caesar cipher or string in vigenere cipher")
-    parser_decode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'],
-                               help="required argument, caesar or cipher")
+    parser_decode.add_argument('--cipher', required=True, choices=['caesar', 'vigenere'])
     parser_decode.add_argument('--input_file',
                                help="if the argument is passed input from a file, else through the console")
     parser_decode.add_argument('--output_file',
